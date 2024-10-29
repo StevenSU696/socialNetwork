@@ -1,4 +1,15 @@
 <?php
+
+//Verifie si l'utilisateur est connecté en verifiant si $_SESSION['username'] est renseigné.
+function checkUserLogged()
+{
+    if (!empty($_SESSION['username'])) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 //Connexion à la base de donnée
 function dbConnect()
 {
@@ -29,9 +40,31 @@ function dbLogin($userName, $password)
         if ($check) {
             $_SESSION['username'] = $result["prenom"];
             $_SESSION['id'] = $result["id"];
+            $dbh = null;
             return true;
         }
     } else {
+        $dbh = null;
         return  false;
+    }
+}
+
+//L'utilisateur publie un Poste
+//Insert User Post dans la database
+//Si la requete a bien été réalisé, return true, sinon return false
+function dbUserPost()
+{
+    if (!empty($_POST['user_post']) && isset($_SESSION['id'])) {
+        $date = date("Y-m-d");
+        $sql = "insert into post (utilisateur_id,contenu,date_publication) values('$_SESSION[id]', '$_POST[user_post]', '$date')";
+        $stmt = dbConnect()->prepare($sql);
+        $result = $stmt->execute();
+        if ($result) {
+            $dbh = null;
+            return true;
+        } else {
+            $dbh = null;
+            return  false;
+        }
     }
 }

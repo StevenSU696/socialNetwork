@@ -1,10 +1,14 @@
     <?php
     //Debut de la session
     session_start();
-    //
-    if (!empty($_SESSION['username'])) {
-        header("location: /logged.php");
-    } elseif (empty($_SESSION['username'])) {
+    include_once 'dbFunctions.php';
+
+    //Si l'utilisateur est déjà connecté, on le redirige vers la page homeUser.php
+    //Autrement, on le laisse accéder au formulaire de login
+    if (checkUserLogged()) {
+        echo "<meta http-equiv='refresh' content='10;url=/homeUser.php'><div>Vous etes déjà connecté</div><br>
+        <a href='homeUser.php'>Vous allez etre redirigé ou cliquer ici</a>";
+    } else {
         echo "<div>Entrez vos identifiants </div>
     <form action='login.php' method='post'>
         <label for='username'>Nom d'utilisateur:</label>
@@ -15,9 +19,4 @@
     </form><br>
     <a href='newUser.php'> Créer un nouveau compte</a>";
     }
-
-
-
-
-
     ?>
