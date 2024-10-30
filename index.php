@@ -1,9 +1,9 @@
     <?php
-    //Debut de la session
+    //Debut/Reprise de la session
     session_start();
-    //Definie la constante INCLUDE_ALLOWED pour autoriser l'accès à dbFunctions.php
+    //Définie INCLUDE_ALLOWED et autorise la page à accéder à dbFunctions.php
     define('INCLUDE_ALLOWED', true);
-    include_once 'dbFunctions.php';
+    include_once "dbFunctions.php";
 
     //Si l'utilisateur est déjà connecté, on le redirige vers la page homeUser.php
     //Autrement, on le laisse accéder au formulaire de login

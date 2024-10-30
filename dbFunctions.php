@@ -4,7 +4,6 @@
 //Si la constante INCLUDE_ALLOWED n'est pas définie, on redirige l'utilisateur vers la page index.php
 if (!defined('INCLUDE_ALLOWED')) {
     die("Accès direct interdit.");
-    header("location: /index.php");
 }
 
 //Verifie si l'utilisateur est connecté en verifiant si $_SESSION['username'] est renseigné.
@@ -38,9 +37,9 @@ function dbConnect()
 function dbLogin($userName, $password)
 {
     //préparation de la requete
-    $sql = "SELECT prenom, id,mot_de_passe FROM utilisateur  where prenom='$userName'";
+    $sql = "SELECT prenom, id,mot_de_passe FROM utilisateur  where prenom=?";
     $stmt = dbConnect()->prepare($sql);
-    $stmt->execute();
+    $stmt->execute([$userName]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($result) {
         $check = password_verify($_POST['password'], $result['mot_de_passe']);

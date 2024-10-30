@@ -1,8 +1,10 @@
 <?php
+//Debut/Reprise de la session
 session_start();
-//Autorise la page à accéder à dbFunctions.php
+//Définie INCLUDE_ALLOWED et autorise la page à accéder à dbFunctions.php
 define('INCLUDE_ALLOWED', true);
 include_once "dbFunctions.php";
+
 if (checkUserLogged()) {
     echo "Bienvenu à toi " . $_SESSION["username"];
 } else {
