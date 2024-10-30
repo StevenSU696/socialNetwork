@@ -1,12 +1,16 @@
 <?php
 session_start();
+//Autorise la page à accéder à dbFunctions.php
+define('INCLUDE_ALLOWED', true);
 include_once "dbFunctions.php";
-if (empty($_SESSION['username'])) {
+if (checkUserLogged()) {
+    echo "Bienvenu à toi " . $_SESSION["username"];
+} else {
     header("location: /index.php");
 }
 
-echo "Bienvenu à toi " . $_SESSION["username"];
 if (isset($_POST['logout'])) {
+    $_SESSION = [];
     session_destroy();
     header('location: /index.php');
 }

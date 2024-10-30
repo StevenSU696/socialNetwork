@@ -1,13 +1,16 @@
 <?php
 session_start();
+//Autorise la page à accéder à dbFunctions.php
+define('INCLUDE_ALLOWED', true);
 include_once "dbFunctions.php";
-//Page initié par l'envois du formulaire HomeUser
 
+//Vérifie si l'utilisateur est connecté, si non, envoyé le vers la page logged.php
 if (!checkUserLogged()) {
     header("location: /logged.php");
 }
 
-//Si le formulaire a été rempli, on lui affiche un message de confirmation et on le redirige vers homeUser
+//Si le formulaire Post a été rempli, 
+//On lui affiche un message de confirmation et on le redirige vers homeUser
 if (dbUserPost()) {
     echo "<meta http-equiv='refresh' content='10;url=/homeUser.php'>Le poste a bien été publié<br>
     <a href='homeUser.php'>Vous allez etre redirigé ou cliquer ici</a>";

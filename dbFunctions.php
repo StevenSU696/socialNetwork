@@ -1,5 +1,12 @@
 <?php
 
+//Controle que la personne n'accede pas à la page dbFunctions.php directement
+//Si la constante INCLUDE_ALLOWED n'est pas définie, on redirige l'utilisateur vers la page index.php
+if (!defined('INCLUDE_ALLOWED')) {
+    die("Accès direct interdit.");
+    header("location: /index.php");
+}
+
 //Verifie si l'utilisateur est connecté en verifiant si $_SESSION['username'] est renseigné.
 function checkUserLogged()
 {
