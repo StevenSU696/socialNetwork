@@ -62,15 +62,46 @@ function dbUserPost()
 {
     if (!empty($_POST['user_post']) && isset($_SESSION['id'])) {
         $date = date("Y-m-d");
-        $sql = "insert into post (utilisateur_id,contenu,date_publication) values('$_SESSION[id]', '$_POST[user_post]', '$date')";
+        $sql = "insert into post (utilisateur_id,contenu,date_publication) values(?, ?, ?)";
         $stmt = dbConnect()->prepare($sql);
-        $result = $stmt->execute();
+        $result = $stmt->execute([$_SESSION['id'], $_POST['user_post'], $date]);
         if ($result) {
             $dbh = null;
             return true;
         } else {
             $dbh = null;
             return  false;
+        }
+    }
+}
+
+
+//Récupére les posts de l'utilisateur
+//Fonction à finir
+function userPost($userId)
+{
+    $sql = "select contenu,date_publication from post where utilisateur_id=?";
+}
+
+
+//Création d'un nouvel utilisateur via formulaire newUser.php
+function newUser($POST)
+{
+    if ($POST['lastname'] && $POST['firstname'] && $POST['password1on2'] && $POST['password2on2'] && $POST['email']) {
+        if ($POST['password1on2'] == $POST['password2on2']) {
+            $password = password_hash($POST['password1on2'], PASSWORD_DEFAULT);
+            $date = date("Y-m-d");
+            $sql = "insert into utilisateur (nom,prenom,mot_de_passe,email,date_inscription) values(?,?,?,?,?)";
+
+            try {
+                $stmt = dbConnect()->prepare($sql);
+                $result = $stmt->execute([$POST['lastname'], $POST['firstname'], $password, $POST['email'], $date]);
+                $dbh = null;
+                return true;
+            } catch (PDOException $e) {
+                $dbh = null;
+                return false;
+            }
         }
     }
 }

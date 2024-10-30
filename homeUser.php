@@ -18,6 +18,9 @@ if (isset($_POST['logout'])) {
 }
 ?>
 
+
+
+
 <form action="homeUser.php" method="post">
     <button type="submit" name="logout" id="logout" value="Logout">Logout</button>
 </form>
