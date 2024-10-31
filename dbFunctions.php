@@ -6,12 +6,13 @@ if (!defined('INCLUDE_ALLOWED')) {
     die("Accès direct interdit.");
 }
 
-//Verifie si l'utilisateur est connecté en verifiant si $_SESSION['username'] est renseigné.
+//Verifie si l'utilisateur est connecté en verifiant si user et id existe dans session.
 function checkUserLogged()
 {
-    if (!empty($_SESSION['username'])) {
+    if (!empty($_SESSION['id']) && !empty($_SESSION['username'])) {
         return true;
     } else {
+        $_SESSION = [];
         return false;
     }
 }
@@ -37,7 +38,8 @@ function dbConnect()
 function dbLogin($userName, $password)
 {
     //préparation de la requete
-    $sql = "SELECT prenom, id,mot_de_passe FROM utilisateur  where prenom=?";
+    $userName = htmlspecialchars(trim($userName));
+    $sql = "SELECT prenom, id,mot_de_passe,email FROM utilisateur  where email=?";
     $stmt = dbConnect()->prepare($sql);
     $stmt->execute([$userName]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -76,12 +78,24 @@ function dbUserPost()
 }
 
 
-//Récupére les posts de l'utilisateur
-//Fonction à finir
-function userPost($userId)
+//Récupére les posts des utilisateur
+//Retourn un tableau de posts utilisateur
+function userPost()
 {
-    $sql = "select contenu,date_publication from post where utilisateur_id=?";
+    $sql = "SELECT utilisateur.nom, utilisateur.prenom, post.contenu, post.date_publication,post.id,post.utilisateur_id 
+    FROM utilisateur INNER JOIN post 
+    ON utilisateur.id = post.utilisateur_id";
+    $stmt = dbConnect()->prepare($sql);
+    $stmt->execute();
+    if ($result = $stmt->fetchAll(PDO::FETCH_ASSOC)) {
+        $dbh = null;
+        return $result;
+    } else {
+        $dbh = null;
+        return false;
+    }
 }
+
 
 
 //Création d'un nouvel utilisateur via formulaire newUser.php
@@ -94,8 +108,10 @@ function newUser($POST)
             $sql = "insert into utilisateur (nom,prenom,mot_de_passe,email,date_inscription) values(?,?,?,?,?)";
 
             try {
+                $lastname = htmlspecialchars(trim($POST['lastname']));
+                $firstname = htmlspecialchars(trim($POST['firstname']));
                 $stmt = dbConnect()->prepare($sql);
-                $result = $stmt->execute([$POST['lastname'], $POST['firstname'], $password, $POST['email'], $date]);
+                $result = $stmt->execute([$lastname, $firstname, $password, $POST['email'], $date]);
                 $dbh = null;
                 return true;
             } catch (PDOException $e) {

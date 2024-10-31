@@ -15,9 +15,9 @@ if (!empty($_POST)) {
     echo "<div>Formulaire de création d'un utilisateur</div>
     <form action='newUser.php' method='post'>
         <label for='lastname'>Nom:</label>
-            <input required value='' type='text' name='lastname' id='lastname' /><br>
+            <input required pattern='[A-Za-zÀ-ÖØ-öø-ÿ\s]+' value='' type='text' name='lastname' id='lastname' /><br>
         <label for='firstname'>Prenom:</label>
-            <input required value='' type='text' name='firstname' id='firstname' /><br>
+            <input required pattern='[A-Za-zÀ-ÖØ-öø-ÿ\s]+' value='' type='text' name='firstname' id='firstname' /><br>
         <label for='password1on2'>Mot de passe:</label>
             <input required value='' type='password' name='password1on2' id='password' /><br>
         <label for='password2on2'>Veuillez confirmer et resaisir le meme mot de passe:</label>

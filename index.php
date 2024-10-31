@@ -13,8 +13,8 @@
     } else {
         echo "<div>Entrez vos identifiants </div>
     <form action='login.php' method='post'>
-        <label for='username'>Nom d'utilisateur:</label>
-        <input required value='' type='text' name='username' id='username' /><br>
+        <label for='email'>E-mail utilisateur:</label>
+        <input required value='' type='email' name='email' id='email' /><br>
         <label for='password'>Mot de passe:</label>
         <input required value='' type='password' name='password' id='password' /><br>
         <button type='submit' name='submit' id='submit' value='Login'>LOGIN</button>
@@ -22,3 +22,5 @@
     <a href='newUser.php'> Créer un nouveau compte</a>";
     }
     ?>
+
+    
